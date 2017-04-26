@@ -31,13 +31,13 @@
 			# attempt to log user in...
 			$clean = array_map('trim', $_POST);
 
-			$check = doLogin($conn, $clean);
+			$check = Utils::doLogin($conn, $clean);
 
 			# set sessions
 			$_SESSION['admin_id'] = $check[1];
 
 			# redirect
-			header("Location: dashboard.php"); 
+			header("Location: add_category.php"); 
 		}
 	}
 ?>
@@ -50,12 +50,12 @@
 			if(isset($_GET['msg'])){ echo '<span class="err">'.$_GET['msg'].'</span>'; }
 		?>
 			<div>
-				<?php displayError("email", $errors); ?>
+				<?php Utils::displayError("email", $errors); ?>
 				<label>email:</label>
 				<input type="text" name="email" placeholder="email">
 			</div>
 			<div>
-				<?php displayError("password", $errors); ?>
+				<?php Utils::displayError("password", $errors); ?>
 				<label>password:</label>
 				<input type="password" name="password" placeholder="password">
 			</div>

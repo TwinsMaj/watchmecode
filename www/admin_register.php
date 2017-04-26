@@ -43,7 +43,7 @@
 
 
 		# check for duplicate emails...
-		$check = doesEmailExist($conn, $_POST['email']);
+		$check = Utils::doesEmailExist($conn, $_POST['email']);
 		if($check) { 
 			$errors["email"] = "email already exist"; 
 		}
@@ -61,7 +61,7 @@
 			$clean['password'] = $hash;
 
 			# insert into db
-			doRegistration($conn, $clean);
+			Utils::doRegistration($conn, $clean);
 		}
 
 	}
@@ -72,29 +72,29 @@
 		<hr>
 		<form id="register"  action ="admin_register.php" method ="POST">
 			<div>
-				<?php displayError("fname", $errors); ?>
+				<?php Utils::displayError("fname", $errors); ?>
 				<label>first name:</label>
 				<input type="text" name="fname" placeholder="first name">
 			</div>
 			<div>
-				<?php displayError("lname", $errors); ?>
+				<?php Utils::displayError("lname", $errors); ?>
 				<label>last name:</label>	
 				<input type="text" name="lname" placeholder="last name">
 			</div>
 
 			<div>
-				<?php displayError("email", $errors); ?>
+				<?php Utils::displayError("email", $errors); ?>
 				<label>email:</label>
 				<input type="text" name="email" placeholder="email">
 			</div>
 			<div>
-				<?php displayError("password", $errors); ?>
+				<?php Utils::displayError("password", $errors); ?>
 				<label>password:</label>
 				<input type="password" name="password" placeholder="password">
 			</div>
  
 			<div>
-				<?php displayError("pword", $errors); ?>
+				<?php Utils::displayError("pword", $errors); ?>
 				<label>confirm password:</label>	
 				<input type="password" name="pword" placeholder="password">
 			</div>

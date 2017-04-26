@@ -1,16 +1,7 @@
 <?php
-	function multiple($x) {
-		return $x * $x;
-	}
+	include 'includes/connection.php';
+	include 'includes/functions.php';
 
-	$num = [1, 2, 3, 4];
+	$admins = Utils::showAdmins($conn);
+	echo $admins;
 
-	foreach ($num as $value) {
-		# code...
-		echo multiple($value);
-		echo '<br/>';
-	}
-
-	$newArray = array_map('multiple', $num);
-
-	print_r($newArray);
