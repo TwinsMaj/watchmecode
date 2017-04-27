@@ -232,7 +232,8 @@ form#register label {
 form#login input[type="text"],
 form#register input[type="text"],
 form#login input[type="password"],
-form#register input[type="password"]  {
+form#register input[type="password"],
+form#register select  {
 	border-radius: 2px;
 	border: 1px solid #ccc;
 	padding: 8px;
@@ -298,7 +299,7 @@ table#tab td a:hover {
 }
 
 table#tab tr td:first-of-type {
-	width: 500px;
+	width: 200px;
 }
 
 

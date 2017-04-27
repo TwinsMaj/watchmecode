@@ -16,6 +16,7 @@
 	# include db connection
 	include 'includes/connection.php';
 
+	# expect incoming request to come with an
 	if(isset($_GET['cat_id'])) {
 		$catID = $_GET['cat_id'];
 	}
@@ -39,7 +40,7 @@
 			Utils::updateCategory($conn, $clean);
 
 			# redirect..
-			Utils::redirect("view_category.php", "");
+			#Utils::redirect("view_category.php", "");
 		}
 	}
 	
@@ -50,7 +51,7 @@
 		
 		<h1 id="register-label">Edit Category</h1>
 		<hr>
-		<form id="register"  action ="<?php echo 'editcategory.php?cat_id='.$catID; ?>" method ="POST">
+		<form id="register"  action ="" method ="POST">
 			<div>
 				<?php Utils::displayError('cat_name', $errors); ?>
 				<label>category name:</label>

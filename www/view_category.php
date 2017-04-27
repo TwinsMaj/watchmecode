@@ -30,8 +30,20 @@
 				</thead>
 				<tbody>
 					<?php 
-						$categoryList = Utils::fetchCategories($conn); 
-						echo $categoryList;
+						#$categoryList = Utils::fetchCategories($conn); 
+						#echo $categoryList;
+
+						Utils::fetchCategories($conn, function($data) {
+							$result = "";
+
+							while ($row = $data->fetch(PDO::FETCH_BOTH)) {
+								$result .= '<tr><td>'.$row[0].'</td><td>'.$row[1].'</td>
+								<td><a href="editcategory.php?cat_id='.$row[0].'">edit</a></td>
+								<td><a href="deletecategory.php?cat_id='.$row[0].'">delete</a></td></tr>';
+							}
+
+							echo $result;
+						});
 					?>
           		</tbody>
 			</table>

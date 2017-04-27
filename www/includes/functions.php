@@ -3,7 +3,7 @@
 	{
 		public static function checkLogin() {
 			if(!isset($_SESSION['admin_id'])) {
-				Utils::redirect("admin_login.php", "");
+				static::redirect("admin_login.php", "");
 			}
 		}
 
@@ -91,19 +91,12 @@
 			}
 		}
 
-		public static function fetchCategories($dbconn) {
-			$result = "";
-
+		public static function fetchCategories($dbconn, $any = null, $cb) {
 			$stmt = $dbconn->prepare("SELECT * FROM category");
 			$stmt->execute();
 
-			while ($row = $stmt->fetch(PDO::FETCH_BOTH)) {
-				$result .= '<tr><td>'.$row[0].'</td><td>'.$row[1].'</td>
-				<td><a href="editcategory.php?cat_id='.$row[0].'">edit</a></td>
-				<td><a href="deletecategory.php?cat_id='.$row[0].'">delete</a></td></tr>';
-			}
-
-			return $result;
+			# delegate to cb..
+			$cb($stmt, $any);
 		}
 
 		public static function showAdmins($dbconn) {
@@ -154,5 +147,78 @@
 
 			$stmt->execute($data);
 		}
+
+
+		function deleteCategory($dbconn, $catid) {
+			$stmt = $dbconn->prepare("DELETE FROM category WHERE category_id=:cid");
+			$stmt->bindParam("cid", $catid);
+
+			$stmt->execute();
+		}
+
+		public static function uploadFile($destination, $files, $key) {
+
+			$result = [];
+
+			$rnd = rand(00000, 99999);
+			$file_name = str_replace(" ", "_", $files[$key]['name'] );
+
+			$file_name = $rnd.$file_name;
+			$destination = $destination.$file_name;
+
+			if(move_uploaded_file($files[$key]['tmp_name'], $destination)){
+				$result[] = true;
+				$result[] = $destination;
+		
+			} else {
+				$result[] = false;
+			}
+
+			return $result;
+
+		}
+
+
+		public static function doAddProduct($dbconn, $input) {
+			$stmt = $dbconn->prepare("INSERT INTO book(category_id, name, author, price, img_loc) 
+				VALUES(:cid, :name, :author, :price, :loc)");
+			
+			$data = [
+				":cid" 		=> $input['cat'],
+				":name" 	=> $input['book_name'],
+				":author" 	=> $input["author"],
+				":price" 	=> $input['price'],
+				":loc" 		=> $input['loc']
+			];
+
+			$stmt->execute($data);
+		}
+
+		public static function viewProducts($dbconn) {
+			$result = "";
+
+			$stmt = $dbconn->prepare("SELECT book_id, name, author, price FROM book");
+			$stmt->execute();
+
+			while ($row = $stmt->fetch(PDO::FETCH_BOTH)) {
+				$result .= '<tr><td>'.$row[1].'</td><td>'.$row[2].'</td><td>'.$row[3].'</td>
+				<td><a href="editproduct.php?bid='.$row[0].'">edit</a></td>
+				<td><a href="deleteproduct.php?bid='.$row[0].'">delete</a></td></tr>';
+			}
+
+			return $result;
+		}
+
+
+		public static function getBookByID($dbconn, $pid) {
+			$stmt = $dbconn->prepare("SELECT * FROM book WHERE book_id=:bid");
+			$stmt->bindParam(":bid", $pid);
+
+			$stmt->execute();
+			$row = $stmt->fetch(PDO::FETCH_BOTH);
+
+			return $row;
+		}
+
 
 	}
